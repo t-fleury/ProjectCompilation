@@ -2,27 +2,27 @@
   #include <stdio.h>
 %}
 
-%start E
-%token V I Af Sk If Th El Wh Do Se Sk
+%start C
+%token V I Af Sk If Th El Wh Do Se Pl Mo Mu
 
 %%
-E : E '+' T
-  | E '-' T
-  | T
-  ;
-T : T '*' F
-  | F
-  ;
-F : '(' E ')'
-  | I
-  | V
-  ;
 C : V Af E
   | Sk
   | '(' C ')'
   | If E Th C El C
   | Wh E Do C
   | C Se C
+  ;
+E : E Pl T
+  | E Mo T
+  | T
+  ;
+T : T Mu F
+  | F
+  ;
+F : '(' E ')'
+  | I
+  | V
   ;
 %%
 
