@@ -5,26 +5,18 @@
 %}
 
 %%
-Af  {printf(":=");}
-Sk  {printf("skip");}
-If  {printf("if");}
-Th  {printf("then");}
-El  {printf("else");}
-Wh  {printf("while");}
-Do  {printf("do");}
-Se  {printf(";");}
-Pl  {printf("+");}
-Mo  {printf("-");}
-Mu  {printf("*");}
-.|\n {printf(yytext);}
+:=  {return "Af";}
+skip  {return "Sk";}
+if  {return "If";}
+then  {return "Th";}
+else  {return "El";}
+while  {return "Wh";}
+do  {return "Do";}
+;  {return "Se";}
++  {return "Pl";}
+-  {return "Mo";}
+*  {return "Mu";}
+.|\n {return yytext;}
 %%
 
 int yywrap(){return -1;}
-
-int main(){
- int c;
- while((c = yylex()) != '\n'){
-   printf("%d\n", c);
- }
- return 0;
-}
