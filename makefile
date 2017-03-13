@@ -16,10 +16,7 @@ ifneq ($(ARGS),)
 endif
 endif
 
-.c.o:
-	$(CC) -c -o $@ $< $(LFLAGS)
 .l.c:
-
 	flex -o $(F).lex.c $(F).lex.l
 .y.c:
 	@echo -e "\n\033[32;02mCompiling yacc file:" $(F).y "\033[00m"
@@ -27,6 +24,9 @@ endif
 	yacc -o $(F).c $(YFLAGS) $<
 	mv $(F).h $(F).yacc.h
 	mv $(F).c $(F).yacc.c
+.c.o:
+		$(CC) -c -o $@ $< $(LFLAGS)
+
 
 $(F): $(F).yacc.o $(F).lex.o
 	$(CC) -o $@ $^
