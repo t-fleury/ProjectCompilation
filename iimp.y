@@ -5,6 +5,7 @@
   #include <stdbool.h>
   int yyparse();
   int yylex();
+  int yyerror(char*);
   char **variablesName;
   int *value;
   int lenght;
@@ -15,8 +16,7 @@
     value = realloc(value, lenght* sizeof(int));
     value[lenght-1] = NULL;
     variablesName = realloc(variablesName, lenght * sizeof(char*));
-    variablesName[lenght-1] = realloc(variablesName[lenght-1],(sizeof(name)/sizeof(char)) +1);
-    printf("Next to this\n");
+    variablesName[lenght-1] = realloc(variablesName[lenght-1],(sizeof(name)/sizeof(char))+ 1);
     strcpy(variablesName[lenght-1], name);
   }
 
@@ -37,7 +37,8 @@
 %start C
 %token <integer> I
 %token <string> V Af Sk If Th El Wh Do Se Pl Mo Mu
-%type <integer> E T F
+%type <integer> E T
+%type <string> C F
 %left Af Mu
 %left Pl Mo
 %left El
@@ -49,7 +50,8 @@ C : V Af E {
     if((i = findVariable($1)) != -1){
       value[i] = $3;
     }else{
-      createVariable((char*)$1);
+      printf("{%s}\n", $1);
+      createVariable($1);
       value[lenght-1] = $3;
     }
   }
@@ -74,7 +76,7 @@ T : T Mu F
   ;
 F : '(' E ')' {$$ = $2;}
   | I {}
-  | V {findVariable((char*)$1);}
+  | V {}
   ;
 %%
 

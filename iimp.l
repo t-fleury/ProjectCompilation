@@ -3,6 +3,8 @@
  #include <stdlib.h>
  #include <string.h>
  #include "y.tab.c"
+ int fileno(FILE*);
+ char* strdup(const char *s);
 %}
 
 V [a-zA-Z][0-9]*
@@ -20,7 +22,7 @@ do  {yylval.string = strdup(yytext);return Do;}
 "+" {yylval.string = strdup(yytext);return Pl;}
 "-" {yylval.string = strdup(yytext);return Mo;}
 "*" {yylval.string = strdup(yytext);return Mu;}
-{V} {yylval.string = strdup(yytext);return V;}
+{V} {printf("%s\n", yytext);yylval.string = yytext;return V;}
 {I} {yylval.integer = atoi(yytext);return I;}
 [\t]+ {;}
 [\n]  {;}

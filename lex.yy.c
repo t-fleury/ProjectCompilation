@@ -478,7 +478,9 @@ char *yytext;
  #include <stdlib.h>
  #include <string.h>
  #include "y.tab.c"
-#line 482 "lex.yy.c"
+ int fileno(FILE*);
+ char* strdup(const char *s);
+#line 484 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -696,9 +698,9 @@ YY_DECL
 		}
 
 	{
-#line 11 "iimp.l"
+#line 13 "iimp.l"
 
-#line 702 "lex.yy.c"
+#line 704 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -757,91 +759,91 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "iimp.l"
+#line 14 "iimp.l"
 {yylval.string = strdup(yytext);return Sk;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "iimp.l"
+#line 15 "iimp.l"
 {yylval.string = strdup(yytext);return If;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "iimp.l"
+#line 16 "iimp.l"
 {yylval.string = strdup(yytext);return Th;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "iimp.l"
+#line 17 "iimp.l"
 {yylval.string = strdup(yytext);return El;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "iimp.l"
+#line 18 "iimp.l"
 {yylval.string = strdup(yytext);return Wh;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "iimp.l"
+#line 19 "iimp.l"
 {yylval.string = strdup(yytext);return Do;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "iimp.l"
+#line 20 "iimp.l"
 {yylval.string = strdup(yytext);return Af;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "iimp.l"
+#line 21 "iimp.l"
 {yylval.string = strdup(yytext);return Se;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 20 "iimp.l"
+#line 22 "iimp.l"
 {yylval.string = strdup(yytext);return Pl;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "iimp.l"
+#line 23 "iimp.l"
 {yylval.string = strdup(yytext);return Mo;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "iimp.l"
+#line 24 "iimp.l"
 {yylval.string = strdup(yytext);return Mu;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "iimp.l"
-{yylval.string = strdup(yytext);return V;}
+#line 25 "iimp.l"
+{printf("%s\n", yytext);yylval.string = yytext;return V;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "iimp.l"
+#line 26 "iimp.l"
 {yylval.integer = atoi(yytext);return I;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "iimp.l"
+#line 27 "iimp.l"
 {;}
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 26 "iimp.l"
+#line 28 "iimp.l"
 {;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "iimp.l"
+#line 29 "iimp.l"
 {;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 28 "iimp.l"
+#line 30 "iimp.l"
 ECHO;
 	YY_BREAK
-#line 845 "lex.yy.c"
+#line 847 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1842,7 +1844,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 28 "iimp.l"
+#line 30 "iimp.l"
 
 
 

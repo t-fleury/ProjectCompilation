@@ -70,6 +70,7 @@
   #include <stdbool.h>
   int yyparse();
   int yylex();
+  int yyerror(char*);
   char **variablesName;
   int *value;
   int lenght;
@@ -80,9 +81,10 @@
     value = realloc(value, lenght* sizeof(int));
     value[lenght-1] = NULL;
     variablesName = realloc(variablesName, lenght * sizeof(char*));
-    variablesName[lenght-1] = realloc(variablesName[lenght-1],(sizeof(name)/sizeof(char)) +1);
-    printf("Next to this\n");
+    variablesName[lenght-1] = realloc(variablesName[lenght-1],(sizeof(name)/sizeof(char))+ 1);
+    printf("Next to this %s \n", name);
     strcpy(variablesName[lenght-1], name);
+    printf("Next to this\n");
   }
 
   int findVariable(char *name){
@@ -94,7 +96,7 @@
     return -1;
   }
 
-#line 98 "y.tab.c" /* yacc.c:339  */
+#line 100 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -161,12 +163,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 33 "iimp.y" /* yacc.c:355  */
+#line 35 "iimp.y" /* yacc.c:355  */
 
   char *string;
   int integer;
 
-#line 170 "y.tab.c" /* yacc.c:355  */
+#line 172 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -183,7 +185,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 187 "y.tab.c" /* yacc.c:358  */
+#line 189 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -482,8 +484,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    47,    47,    56,    57,    58,    65,    66,    68,    69,
-      70,    72,    73,    75,    76,    77
+       0,    50,    50,    60,    61,    62,    69,    70,    72,    73,
+      74,    76,    77,    79,    80,    81
 };
 #endif
 
@@ -1268,21 +1270,22 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 47 "iimp.y" /* yacc.c:1646  */
+#line 50 "iimp.y" /* yacc.c:1646  */
     {
     int i;
     if((i = findVariable((yyvsp[-2].string))) != -1){
       value[i] = (yyvsp[0].integer);
     }else{
-      createVariable((char*)(yyvsp[-2].string));
+      printf("{%s}\n", (yyvsp[-2].string));
+      createVariable((yyvsp[-2].string));
       value[lenght-1] = (yyvsp[0].integer);
     }
   }
-#line 1282 "y.tab.c" /* yacc.c:1646  */
+#line 1285 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 58 "iimp.y" /* yacc.c:1646  */
+#line 62 "iimp.y" /* yacc.c:1646  */
     {
     if((yyvsp[-4].integer) > 0){
       ifThEl = true;
@@ -1290,29 +1293,29 @@ yyreduce:
       ifThEl = false;
     }
   }
-#line 1294 "y.tab.c" /* yacc.c:1646  */
+#line 1297 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 75 "iimp.y" /* yacc.c:1646  */
-    {(yyval.integer) = (yyvsp[-1].integer);}
-#line 1300 "y.tab.c" /* yacc.c:1646  */
+#line 79 "iimp.y" /* yacc.c:1646  */
+    {(yyval.string) = (yyvsp[-1].integer);}
+#line 1303 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 76 "iimp.y" /* yacc.c:1646  */
+#line 80 "iimp.y" /* yacc.c:1646  */
     {}
-#line 1306 "y.tab.c" /* yacc.c:1646  */
+#line 1309 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 77 "iimp.y" /* yacc.c:1646  */
-    {findVariable((char*)(yyvsp[0].string));}
-#line 1312 "y.tab.c" /* yacc.c:1646  */
+#line 81 "iimp.y" /* yacc.c:1646  */
+    {}
+#line 1315 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1316 "y.tab.c" /* yacc.c:1646  */
+#line 1319 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1540,7 +1543,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 79 "iimp.y" /* yacc.c:1906  */
+#line 83 "iimp.y" /* yacc.c:1906  */
 
 
 int yyerror(char *s){
