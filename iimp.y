@@ -3,80 +3,49 @@
   #include <stdlib.h>
   #include <string.h>
   #include <stdbool.h>
+  #include "node.h"
   int yyparse();
   int yylex();
   int yyerror(char*);
-  char **variablesName;
-  int *value;
-  int lenght;
-  bool ifThEl;
-
-  void createVariable(char *name){
-    lenght += 1;
-    value = realloc(value, lenght* sizeof(int));
-    value[lenght-1] = NULL;
-    variablesName = realloc(variablesName, lenght * sizeof(char*));
-    variablesName[lenght-1] = realloc(variablesName[lenght-1],(sizeof(name)/sizeof(char))+ 1);
-    strcpy(variablesName[lenght-1], name);
-  }
-
-  int findVariable(char *name){
-    for(int i = 0; i < lenght; i++){
-      if(!strcmp(variablesName[i],name)){
-        return i;
-      }
-    }
-    return -1;
-  }
 %}
 
 %union{
   char *string;
   int integer;
+  Node *node;
 }
-%start C
-%token <integer> I
-%token <string> V Af Sk If Th El Wh Do Se Pl Mo Mu
-%type <integer> E T
-%type <string> C F
+%start run
+%token <string> V I Af Sk If Th El Wh Do Se Pl Mo Mu
+%type <node> C F E T
 %left Af Mu
 %left Pl Mo
 %left El
 %left Se Do
 
 %%
+run : C {printNode($1);}
 C : V Af E {
-    int i;
-    if((i = findVariable($1)) != -1){
-      value[i] = $3;
-    }else{
-      printf("{%s}\n", $1);
-      createVariable($1);
-      value[lenght-1] = $3;
-    }
-  }
-  | Sk
-  | '(' C ')'
+  Node *variable = create_Node($1, NULL, NULL);
+  $$ = create_Node("Af", variable, $3);}
+  | Sk {$$ = create_Node("skip", NULL, NULL);}
+  | '(' C ')' {$$ = $2;}
   | If E Th C El C {
-    if($2 > 0){
-      ifThEl = true;
-    }else{
-      ifThEl = false;
-    }
+    Node *result = create_Node("", $4, $6);
+    $$  = create_Node("If", $2, result);
   }
-  | Wh E Do C
-  | C Se C
+  | Wh E Do C {$$ = create_Node("Wh", $2,$4);}
+  | C Se C {$$ = create_Node("Se",$1,$3);}
   ;
-E : E Pl T
-  | E Mo T
+E : E Pl T {$$ = create_Node("Pl",$1,$3);}
+  | E Mo T {$$ = create_Node("Mo",$1,$3);}
   | T
   ;
-T : T Mu F
+T : T Mu F {$$ = create_Node("Mu",$1,$3);}
   | F
   ;
 F : '(' E ')' {$$ = $2;}
-  | I {}
-  | V {}
+  | I {$$ = create_Node($1, NULL, NULL);}
+  | V {$$ = create_Node($1, NULL, NULL);}
   ;
 %%
 
@@ -87,14 +56,6 @@ int yyerror(char *s){
 }
 
 int main(int argc, char **argv){
-  lenght = 0;
-	value = malloc(sizeof(int));
-	value[0] = NULL;
-	variablesName = malloc(sizeof(char*));
   yyparse();
-  for(int i = 0; i < lenght; i++){
-		printf("(%s : %i) ", variablesName[i], value[i]);
-	}
-  printf("\n");
   return 0;
 }
