@@ -4,6 +4,7 @@
   #include <string.h>
   #include <stdbool.h>
   #include "node.h"
+  #include "environ.h"
   int yyparse();
   int yylex();
   int yyerror(char*);
@@ -12,10 +13,10 @@
 %union{
   char *string;
   int integer;
-  Node *node;
+  struct Node *node;
 }
 %start run
-%token <string> V I Af Sk If Th El Wh Do Se Pl Mo Mu
+%token <string> V I Af Sk If Th El Wh Do Se Pl Mo Mu Open Close
 %type <node> C F E T
 %left Af Mu
 %left Pl Mo
@@ -23,12 +24,15 @@
 %left Se Do
 
 %%
-run : C {printNode($1);}
+run : C {
+  printNode($1);
+  printf("\n");
+  createENV($1);}
 C : V Af E {
   Node *variable = create_Node($1, NULL, NULL);
   $$ = create_Node("Af", variable, $3);}
   | Sk {$$ = create_Node("skip", NULL, NULL);}
-  | '(' C ')' {$$ = $2;}
+  | Open C Close {$$ = $2;}
   | If E Th C El C {
     Node *result = create_Node("", $4, $6);
     $$  = create_Node("If", $2, result);
@@ -43,7 +47,7 @@ E : E Pl T {$$ = create_Node("Pl",$1,$3);}
 T : T Mu F {$$ = create_Node("Mu",$1,$3);}
   | F
   ;
-F : '(' E ')' {$$ = $2;}
+F : Open E Close {$$ = $2;}
   | I {$$ = create_Node($1, NULL, NULL);}
   | V {$$ = create_Node($1, NULL, NULL);}
   ;

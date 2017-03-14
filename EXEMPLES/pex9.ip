@@ -6,4 +6,3 @@ while N do
      X1 := X2;
      X2 := AUX + X2;
      N := N - 1)
-

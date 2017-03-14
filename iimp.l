@@ -7,7 +7,7 @@
  char* strdup(const char *s);
 %}
 
-V [a-zA-Z][0-9]*
+V [a-zA-Z][a-zA-Z0-9]*
 I [1-9][0-9]*
 
 %%
@@ -23,7 +23,9 @@ do  {yylval.string = strdup(yytext);return Do;}
 "-" {yylval.string = strdup(yytext);return Mo;}
 "*" {yylval.string = strdup(yytext);return Mu;}
 {V} {yylval.string = strdup(yytext);return V;}
-0|{I} {yylval.integer = atoi(yytext);return I;}
+0|{I} {yylval.string = strdup(yytext);return I;}
+"(" {return Open;}
+")" {return Close;}
 [\t]+ {;}
 [\n]  {;}
 . {;}

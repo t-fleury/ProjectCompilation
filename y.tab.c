@@ -69,11 +69,12 @@
   #include <string.h>
   #include <stdbool.h>
   #include "node.h"
+  #include "environ.h"
   int yyparse();
   int yylex();
   int yyerror(char*);
 
-#line 77 "y.tab.c" /* yacc.c:339  */
+#line 78 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -117,7 +118,9 @@ extern int yydebug;
     Se = 267,
     Pl = 268,
     Mo = 269,
-    Mu = 270
+    Mu = 270,
+    Open = 271,
+    Close = 272
   };
 #endif
 /* Tokens.  */
@@ -134,19 +137,21 @@ extern int yydebug;
 #define Pl 268
 #define Mo 269
 #define Mu 270
+#define Open 271
+#define Close 272
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 12 "iimp.y" /* yacc.c:355  */
+#line 13 "iimp.y" /* yacc.c:355  */
 
   char *string;
   int integer;
-  Node *node;
+  struct Node *node;
 
-#line 150 "y.tab.c" /* yacc.c:355  */
+#line 155 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -163,7 +168,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 167 "y.tab.c" /* yacc.c:358  */
+#line 172 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -419,7 +424,7 @@ union yyalloc
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   270
+#define YYMAXUTOK   272
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -432,7 +437,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      16,    17,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -455,15 +460,15 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15
+      15,    16,    17
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    26,    26,    27,    30,    31,    32,    36,    37,    39,
-      40,    41,    43,    44,    46,    47,    48
+       0,    27,    27,    31,    34,    35,    36,    40,    41,    43,
+      44,    45,    47,    48,    50,    51,    52
 };
 #endif
 
@@ -473,8 +478,8 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "V", "I", "Af", "Sk", "If", "Th", "El",
-  "Wh", "Do", "Se", "Pl", "Mo", "Mu", "'('", "')'", "$accept", "run", "C",
-  "E", "T", "F", YY_NULLPTR
+  "Wh", "Do", "Se", "Pl", "Mo", "Mu", "Open", "Close", "$accept", "run",
+  "C", "E", "T", "F", YY_NULLPTR
 };
 #endif
 
@@ -484,7 +489,7 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,    40,    41
+     265,   266,   267,   268,   269,   270,   271,   272
 };
 # endif
 
@@ -1248,90 +1253,93 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 26 "iimp.y" /* yacc.c:1646  */
-    {printNode((yyvsp[0].node));}
-#line 1254 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 3:
 #line 27 "iimp.y" /* yacc.c:1646  */
     {
-  Node *variable = create_Node((yyvsp[-2].string), NULL, NULL);
-  (yyval.node) = create_Node("Af", variable, (yyvsp[0].node));}
+  printNode((yyvsp[0].node));
+  printf("\n");
+  createENV((yyvsp[0].node));}
 #line 1262 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 3:
+#line 31 "iimp.y" /* yacc.c:1646  */
+    {
+  Node *variable = create_Node((yyvsp[-2].string), NULL, NULL);
+  (yyval.node) = create_Node("Af", variable, (yyvsp[0].node));}
+#line 1270 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 4:
-#line 30 "iimp.y" /* yacc.c:1646  */
+#line 34 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("skip", NULL, NULL);}
-#line 1268 "y.tab.c" /* yacc.c:1646  */
+#line 1276 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 31 "iimp.y" /* yacc.c:1646  */
+#line 35 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[-1].node);}
-#line 1274 "y.tab.c" /* yacc.c:1646  */
+#line 1282 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 32 "iimp.y" /* yacc.c:1646  */
+#line 36 "iimp.y" /* yacc.c:1646  */
     {
     Node *result = create_Node("", (yyvsp[-2].node), (yyvsp[0].node));
     (yyval.node)  = create_Node("If", (yyvsp[-4].node), result);
   }
-#line 1283 "y.tab.c" /* yacc.c:1646  */
+#line 1291 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 36 "iimp.y" /* yacc.c:1646  */
+#line 40 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("Wh", (yyvsp[-2].node),(yyvsp[0].node));}
-#line 1289 "y.tab.c" /* yacc.c:1646  */
+#line 1297 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 37 "iimp.y" /* yacc.c:1646  */
+#line 41 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("Se",(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1295 "y.tab.c" /* yacc.c:1646  */
+#line 1303 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 39 "iimp.y" /* yacc.c:1646  */
+#line 43 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("Pl",(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1301 "y.tab.c" /* yacc.c:1646  */
+#line 1309 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 40 "iimp.y" /* yacc.c:1646  */
+#line 44 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("Mo",(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1307 "y.tab.c" /* yacc.c:1646  */
+#line 1315 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 43 "iimp.y" /* yacc.c:1646  */
+#line 47 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node("Mu",(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1313 "y.tab.c" /* yacc.c:1646  */
+#line 1321 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 46 "iimp.y" /* yacc.c:1646  */
+#line 50 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[-1].node);}
-#line 1319 "y.tab.c" /* yacc.c:1646  */
+#line 1327 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 47 "iimp.y" /* yacc.c:1646  */
+#line 51 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node((yyvsp[0].string), NULL, NULL);}
-#line 1325 "y.tab.c" /* yacc.c:1646  */
+#line 1333 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 48 "iimp.y" /* yacc.c:1646  */
+#line 52 "iimp.y" /* yacc.c:1646  */
     {(yyval.node) = create_Node((yyvsp[0].string), NULL, NULL);}
-#line 1331 "y.tab.c" /* yacc.c:1646  */
+#line 1339 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1335 "y.tab.c" /* yacc.c:1646  */
+#line 1343 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1559,7 +1567,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 50 "iimp.y" /* yacc.c:1906  */
+#line 54 "iimp.y" /* yacc.c:1906  */
 
 
 int yyerror(char *s){
