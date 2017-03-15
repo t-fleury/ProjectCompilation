@@ -1,6 +1,9 @@
-#include "node.h"
-#include "environ.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "IMPutils.h"
+#include "environ.h"
+#include <stdbool.h>
 char* strdup(const char *s);
 int isdigit(int c);
 
@@ -22,7 +25,7 @@ void printNode(Node *node){
   }
 }
 
-void createENV(Node *tree){
+void create_ImpENV(Node *tree){
   ENV env = Envalloc();
   if(tree != NULL){
     makeTree(&env, tree);

@@ -1,4 +1,3 @@
-
 CC = gcc
 CFLAGS = -g -Wall -std=c99
 # (F)LEX FLAGS
@@ -6,31 +5,43 @@ LFLAGS = -lfl
 # YACC FLAGS
 YFLAGS = -d --report=all
 # .H FILES
-INCLUDE = .include/
+INC_DIR = include
 
-run:$(F)
+run:
 ifneq ($(F),)
-ifneq ($(ARGS),)
-	clear
-	echo -n $$(cat $(ARGS)) | ./$(F)
+	@$(MAKE) -s $(F)
 endif
-endif
+
+.c.o:
+	@$(CC) -c -o $@ $<
 
 .l.c:
-	flex -o $(F).lex.c $(F).lex.l
+	@echo -e "\033[32;02mCompiling flex file:" $^ "\033[00m"
+	@echo -e "\033[32;02mOutput file:" $@ "\033[00m\033[34;01m"
+	@flex -o $@ $^
+	@echo -e "\033[00m"
+
 .y.c:
-	@echo -e "\n\033[32;02mCompiling yacc file:" $(F).y "\033[00m"
-	@echo -e "\033[32;02mOutput file:" $(F).c "\033[00m"
-	yacc -o $(F).c $(YFLAGS) $<
-	mv $(F).h $(F).yacc.h
-	mv $(F).c $(F).yacc.c
-.c.o:
-		$(CC) -c -o $@ $< $(LFLAGS)
+	@echo -e "\n\033[32;02mCompiling yacc file:" $^ "\033[00m"
+	@echo -e "\033[32;02mOutput file:" $@ "\033[00m\033[34;01m"
+	@yacc -o $(F).c $(YFLAGS) $<
+	@mv $(F).h $*.h
+	@mv $(F).c $@
+	@echo -e "\033[00m"
 
+$(F): $(F).yacc.o $(F).lex.o abiimp.o bilquad.o environ.o
+	@echo -e "\033[32;02mCompiling output file:" $^ "\033[00m"
+	@echo -e "\033[32;02mOutput file:" $@ "\033[00m\033[34;01m"
+	@$(CC) -o $@ $^
 
-$(F): $(F).yacc.o $(F).lex.o
-	$(CC) -o $@ $^
-
+exe:
+ifneq ($(F),)
+	@$(MAKE) -s $(F)
+	@read -p "Entrez un fichier pour lancer l'éxécutable : " file;\
+	if [ "$$file" != "" ] ; then clear ; echo -n $$(cat $$file) | ./$(F).exe;fi
+else
+	@echo -e "\033[36;02mVeulliez saisir : make F=<executable> exe\033[00m"
+endif
 
 clean:
-	rm -f *.exe *.o *.output *.dot *.png
+	@rm -f *.exe *.o *.output *.dot *.png *.yacc.h

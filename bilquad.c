@@ -34,14 +34,14 @@ QUAD creer_quad(char *etiq,int op,char *arg1,char *arg2,char *res)
 }
 
 /* retourne une biliste vide  */
-BILQUAD bilquad_vide() 
+BILQUAD bilquad_vide()
 {BILQUAD bq;
   bq.debut=NULL;bq.fin=NULL;
   return(bq);
 }
 
 /* retourne une biliste a un element  */
-BILQUAD creer_bilquad(QUAD qd) 
+BILQUAD creer_bilquad(QUAD qd)
 {BILQUAD bq;
   bq.debut=qd;bq.fin=qd;
   return(bq);
@@ -77,7 +77,7 @@ BILQUAD concatq(BILQUAD bq1, BILQUAD bq2)
         bq.fin=bq2.fin;
         return(bq);}
     else
-      return(bq1);  
+      return(bq1);
   else
     return(bq2);
 }
@@ -94,7 +94,7 @@ char *nomop(int codop)
     case(Afc): return("Afc");
     case(St): return("St");
     case(Jp): return("Jp");
-    case(Jz): return("Jz");  
+    case(Jz): return("Jz");
     default:return(NULL);
     };
 }
@@ -128,5 +128,3 @@ void ecrire_bilquad(BILQUAD bq)
     {ecrire_quad(qcour);
       qcour=qcour->SUIV;}
 }
-
-

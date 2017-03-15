@@ -3,7 +3,7 @@
   #include <stdlib.h>
   #include <string.h>
   #include <stdbool.h>
-  #include "node.h"
+  #include "IMPutils.h"
   #include "environ.h"
   int yyparse();
   int yylex();
@@ -27,7 +27,7 @@
 run : C {
   printNode($1);
   printf("\n");
-  createENV($1);}
+  create_ImpENV($1);}
 C : V Af E {
   Node *variable = create_Node($1, NULL, NULL);
   $$ = create_Node("Af", variable, $3);}

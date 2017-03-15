@@ -10,8 +10,8 @@ typedef struct Node{
 
 Node* create_Node(char *value, Node *rightChild, Node *leftChild);
 void printNode(Node *node);
-void createENV(Node *tree);
-int eval(int op, int arg1, int arg2);
-void makeTree(ENV *env, Node *tree);
+void create_ImpENV(Node *tree);
+int eval(char* op, int arg1, int arg2);
+int makeTree(ENV *env, Node *tree);
 
 #endif
